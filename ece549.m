@@ -3,8 +3,8 @@ radio = sdrdev(deviceNameSDR);           % Create SDR device object
 
 txGain = -1;
 
-% sdrTransmitter = sdrtx(deviceNameSDR); % Transmitter properties
-% sdrTransmitter.RadioID = 'usb:0';
+ sdrTransmitter = sdrtx(deviceNameSDR); % Transmitter properties
+ sdrTransmitter.RadioID = 'usb:0';
 
 fs = 2e6;
 
@@ -19,18 +19,18 @@ t = linspace(-pi, 2*pi, 121);
 
 
 sw = 1.15*square(2*t);
-% sw.Amplitude = 100;
-% sw.Frequency = 100;
-% sw.ComplexOutput = false;
-% sw.SampleRate = fs;
-% sw.SamplesPerFrame = 20000;
-
-
+fs = 2e6;
+sw = dsp.SineWave;
+sw.Amplitude = 100;
+sw.Frequency = 100;
+sw.ComplexOutput = false;
+sw.SampleRate = fs;
+sw.SamplesPerFrame = 20000;
 txWaveform = sw();
 
-txW = complex(txWaveform)
-
-% transmitRepeat(tx,txW);
+txW = complex(txWaveform);
+ 
+transmitRepeat(tx,txW);
 
 plot(real(txW))
 hold on;
@@ -38,8 +38,8 @@ plot(imag(txW))
 hold off;
 legend(["Real", "Imag"])
 
-rx = sdrrx(deviceNameSDR)
-rx.RadioID = "usb:1",
+rx = sdrrx(deviceNameSDR);
+rx.RadioID = "usb:1";
 rx.CenterFrequency = 2.415e9;
 rx.BasebandSampleRate = fs;
 rx.Gain = 0;
@@ -52,9 +52,10 @@ plot(imag(signal));
 title('RX');
 xlim([0 100]);
 
-% L = length(signal);
-% Y = fft(signal);
-% S = ffshift(Y);
-% fshift = ((-L/2):(L/2-1))*(fs/L);
-% powershift = abs(S).^2/L;
+ 
+%L = length(signal);
+ %Y = fft(signal);
+ %S = ffshift(Y);
+ %fshift = ((-L/2):(L/2-1))*(fs/L);
+ %powershift = abs(S).^2/L;
 % plot(fshift,powershift)
